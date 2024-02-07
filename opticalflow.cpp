@@ -27,7 +27,7 @@ int main()
         cerr << "\n\nUnable to open file!\n\n";
         return 0;
     }
-   
+
     // cvui init
     namedWindow(WINDOW_NAME);
     cvui::init(WINDOW_NAME);
@@ -45,7 +45,7 @@ int main()
     waitKey(0);
     Mat roi_gray = old_gray(roi);
 
-    goodFeaturesToTrack(roi_gray, p0, 300, 0.1, 5, Mat(), 7, true, 0.04);
+    goodFeaturesToTrack(roi_gray, p0, 500, 0.1, 5, Mat(), 7, true, 0.04);
 
     for (auto i = 0; i < p0.size(); i++) {
         p0[i].x += roi.x;
@@ -72,8 +72,8 @@ int main()
         vector<float> err;
         TermCriteria criteria = TermCriteria((TermCriteria::COUNT)+(TermCriteria::EPS), 10, 0.03);
         calcOpticalFlowPyrLK(old_gray, frame_gray, p0, p1, status, err, Size(15, 15), 2, criteria);
-        
-        
+
+
         vector<Point2f> good_new;
 
         Mat ransac;
@@ -103,12 +103,12 @@ int main()
             vector<Point2f> newroiCorners = { newROI.tl(), Point2f(newROI.br().x, newROI.tl().y), newROI.br(), Point2f(newROI.tl().x, newROI.br().y) };
             Mat H = findHomography(overlayCorners, newroiCorners);
             Mat warpedOverlay;
-            cv::warpPerspective(overlay, warpedOverlay, H, frame.size());
+            cv::warpPerspective(overlay, warpedOverlay, ransac, frame.size());
             frame += warpedOverlay;
         }
-        
+
         // ROI check
-        if (good_new.empty() || p0.empty() || p1.empty()) { 
+        if (good_new.empty() || p0.empty() || p1.empty()) {
             cout << "\n\n ROI IS OUT OF THE IMAGE \n\n";
             loop = true;
         }
@@ -121,7 +121,7 @@ int main()
 
         int keyboard = waitKey(25);
         if (keyboard == 'q' || keyboard == 27) break;
-        old_gray = frame_gray.clone(); 
+        old_gray = frame_gray.clone();
 
         cvui::window(img, 10, 50, 120, 150, "Settings");
         cvui::checkbox(img, 15, 80, "TERMINATE?", &loop);
@@ -133,5 +133,4 @@ int main()
 
     return 0;
 }
-
 

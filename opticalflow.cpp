@@ -13,7 +13,11 @@
 #include <opencv2/imgproc.hpp>  //warpPerspective()
 #include <opencv2/video.hpp>    //calcOpticalFlowPyrLK()
 
+#ifdef _DEBUG
 #pragma comment (lib, "opencv_world480d.lib")
+#else
+#pragma comment (lib, "opencv_world480.lib")
+#endif
 
 using namespace cv;
 using namespace std;

@@ -1,5 +1,6 @@
 # Sparse-Motion-Field-Tracker
-Masking ROI of the video, with sparse motion field tracker
+- Masking ROI of the video, with sparse motion field tracker
+- See https://velog.io/@n01r1r_/series/23-동계-모각소
 
 ## Dependencies
 - OpenCV 4.8.0
